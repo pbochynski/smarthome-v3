@@ -10,7 +10,7 @@ env:
   - CF_USERNAME=pbochynski@gmail.com
   - CF_ORGANIZATION=iothome
   - CF_SPACE=dev
-before_deploy: npm install -g cf-blue-green && cd client && yarn install && yarn build
+before_deploy: npm install -g cf-blue-green && cd client && yarn install && yarn build && cd ..
 deploy:
   provider: script
   script: cf-blue-green-travis
