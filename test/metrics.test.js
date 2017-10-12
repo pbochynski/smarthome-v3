@@ -18,14 +18,14 @@ describe('Metrics endpoint', function () {
 	it('should store first metric', function (done) {
 
 		request(app)
-			.post('/metrics?api_key=test')
+			.post('/metrics?api_key=TEST')
 			.send({id:"1",t:21.1, vcc:3.61, heater: 0})
 			.expect(200,done);
 	});
 	it('should store second metric', function (done) {
 
 		request(app)
-			.post('/metrics?api_key=test')
+			.post('/metrics?api_key=TEST')
 			.send({id:"2",t:21.2, vcc:3.62, heater: 1})
 			.expect(200,done);
 	});
@@ -55,7 +55,7 @@ describe('Metrics endpoint', function () {
 	it('should override metric', function (done) {
 
 		request(app)
-			.post('/metrics?api_key=test')
+			.post('/metrics?api_key=TEST')
 			.send({id:'2',t:21.3, vcc:3.63, heater:0})
 			.expect(200,done);
 	});
