@@ -17,9 +17,11 @@
     "rsa-pem-from-mod-exp": "^0.8.4"
   },
   "scripts": {
-    "start": "node --max_old_space_size=64 index.js"
+    "start": "node --max_old_space_size=64 index.js",
+    "test": "TEST=true mocha"
   },
   "devDependencies": {
+    "mocha": "^4.0.1",
     "should": "^13.1.0",
     "supertest": "^3.0.0"
   }
