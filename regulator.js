@@ -19,8 +19,11 @@ var mongoDb;
 var connected = false;
 // Connect using MongoClient
 
-function disconnect() {
-    mongoDb.close(true);
+function disconnect(done) {
+    
+    mongoDb.close(true).then(done);
+    mongoDb = null;
+    connected = false;
 }
 function connect(done) {
     console.log("Connecting to %s",url);
@@ -62,15 +65,12 @@ function setConfig(params) {
 
 function getConfig(key) {
     if (staticConfig.keys[key]) {
-        console.log("Key %s found in static config", key);
         return Promise.resolve({tenant:staticConfig.keys[key]});
     }
-    console.log("Key %s not found in static config", key);
     return mongoDb.collection("keys").findOne({_id: key});
 }
 
 function update(tenant, params) {
-    console.log("RAW Update: %s", JSON.stringify(params));
     var values = {state: params.state};
     if (params.state == "auto") {
         if (params.temperature) {
@@ -89,7 +89,6 @@ function update(tenant, params) {
     if (params.state == 'off') {
         values.heater = 0;
     }
-    console.log("Update: %s", JSON.stringify(values));
     return mongoDb.collection("regulator").updateOne({_id: tenant}, {"$set": values}, {upsert: true})
 }
 

@@ -8,6 +8,10 @@ describe('Regulator endpoint', function () {
 	before(function(done) {
 		regulator.connect(done);
 	})
+	after(function(done) {
+		regulator.disconnect(done);
+	})
+
 
 	it('should turn heater off', function (done) {
 		request(app)

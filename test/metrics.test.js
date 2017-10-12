@@ -13,6 +13,9 @@ describe('Metrics endpoint', function () {
 	before(function(done) {
 		regulator.connect(done);
 	})
+	after(function(done) {
+		regulator.disconnect(done);
+	})
 
 
 	it('should store first metric', function (done) {
