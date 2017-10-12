@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node --max_old_space_size=64 index.js",
-    "test": "TEST=true mocha"
+    "test": "TEST=true TENANT_1=test:test@gmail.com:TEST mocha"
   },
   "devDependencies": {
     "mocha": "^4.0.1",
