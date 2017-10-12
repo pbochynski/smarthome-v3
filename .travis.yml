@@ -12,6 +12,7 @@ env:
   - CF_SPACE=dev
 before_deploy: npm install -g cf-blue-green && cd client && yarn install && yarn build && cd ..
 deploy:
+  skip_cleanup: true
   provider: script
   script: cf-blue-green-travis
   on:
