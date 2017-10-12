@@ -8,7 +8,7 @@ function heatingHeader(heater) {
 }
 function desiredTemp(regulator) {
     if (regulator.state==='auto') {
-      return regulator.temperature;
+      return regulator.temperature+' °C';
     }
     return regulator.state==='on' ? 'ON' : 'OFF'
 
@@ -20,7 +20,7 @@ class Regulator extends Component {
     }
     render() {
         return (<Panel header={heatingHeader(this.props.value.heater)}>
-            <h1>{this.props.refSensor.t}</h1>
+            <h1>{this.props.refSensor.t} °C</h1>
             <h5>Desired: {desiredTemp(this.props.value)}</h5>
             <Button bsStyle="danger" onClick={this.handler({state:'off'})}>OFF</Button>{' '}
             <Button bsStyle="primary" onClick={this.handler({state:'auto',temperature:19.4})} >OUT</Button>{' '}

@@ -62,10 +62,10 @@ function setConfig(params) {
 
 function getConfig(key) {
     if (staticConfig.keys[key]) {
-        console.log("Key %s found in static config");
+        console.log("Key %s found in static config", key);
         return Promise.resolve({tenant:staticConfig.keys[key]});
     }
-    console.log("Key %s not found in static config");
+    console.log("Key %s not found in static config", key);
     return mongoDb.collection("keys").findOne({_id: key});
 }
 
