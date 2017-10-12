@@ -1,0 +1,20 @@
+
+language: node_js
+node_js:
+- '8.6'
+sudo: true
+env:
+  global:
+  - CF_APP=smarthome-v3
+  - CF_API=https://api.eu-gb.bluemix.net
+  - CF_USERNAME=pbochynski@gmail.com
+  - CF_ORGANIZATION=iothome
+  - CF_SPACE=dev
+before_deploy: npm install -g cf-blue-green
+deploy:
+  provider: script
+  script: cf-blue-green-travis
+  on:
+    branch: master
+services:
+  - mongodb

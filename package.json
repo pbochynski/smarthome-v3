@@ -1,0 +1,26 @@
+{
+  "name": "smarthome-v3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": "8.6.x"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "express-jwt": "^5.3.0",
+    "jwks-rsa": "^1.2.0",
+    "mongodb": "^2.2.31",
+    "password-generator": "^2.1.0",
+    "request": "^2.83.0",
+    "rsa-pem-from-mod-exp": "^0.8.4"
+  },
+  "scripts": {
+    "start": "node --max_old_space_size=64 index.js"
+  },
+  "devDependencies": {
+    "should": "^13.1.0",
+    "supertest": "^3.0.0"
+  }
+}
