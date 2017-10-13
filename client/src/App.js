@@ -38,8 +38,8 @@ class App extends Component {
     if (window.location.hash) {
       const regex = /id_token=([^&]*)/;
       const str = window.location.hash;
-      let m;
-      if ((m = regex.exec(str)) !== null && m.length >= 1) {
+      let m= regex.exec(str);
+      if (m !== null && m.length >= 1) {
         localStorage.setItem("id_token", m[1]);
         this.setState({ token: m[1] });
       }
