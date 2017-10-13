@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GoogleLogin from 'react-google-login';
 import Regulator from './Regulator';
 import Sensor from './Sensor';
-import { Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap';
 import './App.css';
 import './index.css';
 
@@ -15,6 +15,7 @@ class App extends Component {
     lastUpdate: new Date().getTime(),
     token: localStorage.getItem("id_token")
   };
+
   regulatorUpdate = (regulator) => {
     this.setState((prevState, props) => {
       let params = Object.assign({}, prevState.regulator, regulator);
@@ -34,12 +35,20 @@ class App extends Component {
   }
   // Fetch passwords after first mount
   componentDidMount() {
-    this.getMetrics();
+    if (window.location.hash) {
+      const regex = /id_token=([^&]*)/;
+      const str = window.location.hash;
+      let m;
+      if ((m = regex.exec(str)) !== null && m.length >= 1) {
+        localStorage.setItem("id_token", m[1]);
+        this.setState({ token: m[1] });
+      }
+    }
     setInterval(
       () => { this.setState((prevState, props) => { return { sinceLastUpdate: (new Date().getTime() - prevState.lastUpdate) / 1000 } }) },
       1000
     );
-
+    this.getMetrics();    
   }
 
   logout = () => {
@@ -50,15 +59,15 @@ class App extends Component {
       metrics: [],
       token: null
     });
-    fetch('https://accounts.google.com/Logout');
+
   }
   getMetrics = () => {
     // Get the passwords and store them in state
-    fetch('/metrics', { headers: { "Authorization": "Bearer " + this.state.token } })
+    fetch('/metrics', { headers: { "Authorization": "Bearer " + localStorage.getItem("id_token")} })
       .then(res => { return res.status === 200 ? res.json() : [] })
       .then(metrics => this.setState({ metrics }))
       .then(() => { this.setState({ lastUpdate: new Date().getTime() }) });
-    fetch('/regulator', { headers: { "Authorization": "Bearer " + this.state.token } })
+    fetch('/regulator', { headers: { "Authorization": "Bearer " + localStorage.getItem("id_token")} })
       .then(res => { return res.status === 200 ? res.json() : {} })
       .then(regulator => this.setState({ regulator }));
   }
@@ -75,21 +84,14 @@ class App extends Component {
         <Sensor metrics={this.state.metrics} />
         <Button bsStyle="primary" onClick={this.getMetrics}>Refresh</Button>{' '}
         <GoogleLogin
-            className="btn btn-primary"
-            clientId="111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle} 
-            />{' '}
-            <GoogleLogin
-            className="btn btn-primary"
-            clientId="111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com"
-            buttonText="Switch Account"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle} 
-            prompt="select_account"
-            />{' '}
-          <Button bsStyle="primary" onClick={this.logout}>Logout</Button>{' '}
+          className="btn btn-primary"
+          clientId="111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
+          uxMode="redirect"
+        />{' '}
+        <Button bsStyle="primary" onClick={this.logout}>Logout</Button>{' '}
 
         <p><br />Last update: {this.state.sinceLastUpdate} seconds ago</p>
       </div>

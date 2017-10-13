@@ -21,6 +21,12 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Tenant
+app.use(function (req, res, next) {
+  req.tenant = req.headers['tenant'] || 'pihome';
+  next();
+});
+
 
 function regulatorUpdate(req, res) {
   regulator.update(req.headers['tenant'] || 'pihome', req.query).then(function () {
@@ -86,11 +92,12 @@ if (!process.env.TEST) {
     algorithms: ['RS256']
   }));
   app.use(function (req, res, next) {
-    if (!req.user.email || req.user.email.toLowerCase().indexOf('bochynsk') < 0) {
-      return res.status(403).send("Unauthorized user");
+    if (staticConfig.users[req.tenant] && req.user.email &&
+      staticConfig.users[req.tenant].indexOf(req.user.email.toLowerCase()) >= 0) {
+      return next();
     }
-    next();
-  })
+    return res.status(403).send("Unauthorized user");
+  });
 }
 
 app.post('/aliases', newAlias);
