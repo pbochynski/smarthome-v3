@@ -3,6 +3,7 @@ import GoogleLogin from 'react-google-login';
 import Regulator from './Regulator';
 import Sensor from './Sensor';
 import { Button } from 'react-bootstrap';
+import jwtDecode from 'jwt-decode';
 import './App.css';
 import './index.css';
 
@@ -41,6 +42,7 @@ class App extends Component {
       let m= regex.exec(str);
       if (m !== null && m.length >= 1) {
         localStorage.setItem("id_token", m[1]);
+        localStorage.setItem("login_hint",jwtDecode(m[1]).email);
         this.setState({ token: m[1] });
       }
     }
@@ -54,6 +56,7 @@ class App extends Component {
   logout = () => {
     console.log("Logout");
     localStorage.removeItem("id_token");
+    localStorage.removeItem("login_hint");
     this.setState({
       regulator: {},
       metrics: [],
@@ -90,6 +93,7 @@ class App extends Component {
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
           uxMode="redirect"
+          loginHint={localStorage.getItem("login_hint")}
         />{' '}
         <Button bsStyle="primary" onClick={this.logout}>Logout</Button>{' '}
 
