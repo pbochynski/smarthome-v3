@@ -101,11 +101,16 @@ async function heater(apiKey) {
     const regulator = await get(config.tenant);
     const sensors = await metrics(config.tenant);
     const field = regulator.sensor;
-    var temperature = Number(sensors.filter(function (sensor) {
-        return sensor.chipId == field
-    })[0].t);
     var response = regulator.heater || 0;
     if (regulator.state == 'auto') {
+        var temperature = null;
+        sensors.some((sensor) => {
+            if (sensor.chipId == field) {
+                temperature = sensor.t;
+                return true;
+            }
+            return false;
+        });
         if (temperature < regulator.temperature - regulator.deviation) {
             response = 1;
         } else if (temperature > regulator.temperature + regulator.deviation) {
