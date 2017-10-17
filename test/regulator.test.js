@@ -20,7 +20,7 @@ describe('Regulator endpoint', function () {
 			.send()
 			.expect(200, done);
 	});
-	it.skip('should heater be off', function (done) {
+	it('should heater be off', function (done) {
 		request(app)
 			.get('/heater?api_key=TEST')
 			.send()
