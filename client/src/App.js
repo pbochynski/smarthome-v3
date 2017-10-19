@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GoogleLogin from 'react-google-login';
 import Regulator from './Regulator';
 import Sensor from './Sensor';
 import { Button } from 'react-bootstrap';
@@ -34,8 +33,8 @@ class App extends Component {
     this.setState({ token: response.tokenId });
     this.getMetrics();
   }
-  // Fetch passwords after first mount
-  componentDidMount() {
+
+  handleToken() {
     if (window.location.hash) {
       const regex = /id_token=([^&]*)/;
       const str = window.location.hash;
@@ -44,13 +43,29 @@ class App extends Component {
         localStorage.setItem("id_token", m[1]);
         localStorage.setItem("login_hint",jwtDecode(m[1]).email);
         this.setState({ token: m[1] });
+        window.history.pushState("", document.title, window.location.pathname
+        + window.location.search);
       }
     }
+  }
+  // Fetch passwords after first mount
+  componentDidMount() {
+    this.handleToken();
     setInterval(
       () => { this.setState((prevState, props) => { return { sinceLastUpdate: (new Date().getTime() - prevState.lastUpdate) / 1000 } }) },
       1000
     );
     this.getMetrics();    
+  }
+  login = () => {
+    const clientId = "111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com";
+    const scopes = "email%20profile%20openid";
+    const login_hint = encodeURI(localStorage.getItem("login_hint") || "");
+    const href = encodeURI(window.location.href.split('#')[0]);
+    console.log("href: "+href);
+    console.log("login_hint: "+login_hint);
+    let redirect = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${href}&response_type=id_token&scope=${scopes}&login_hint=${login_hint}&client_id=${clientId}&gsiwebsdk=2`
+    window.location.assign(redirect);
   }
 
   logout = () => {
@@ -86,15 +101,7 @@ class App extends Component {
         <Regulator value={this.state.regulator} refSensor={this.getRefSensorMetric()} onClick={this.regulatorUpdate} />
         <Sensor metrics={this.state.metrics} />
         <Button bsStyle="primary" onClick={this.getMetrics}>Refresh</Button>{' '}
-        <GoogleLogin
-          className="btn btn-primary"
-          clientId="111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-          uxMode="redirect"
-          loginHint={localStorage.getItem("login_hint")}
-        />{' '}
+        <Button bsStyle="primary" onClick={this.login}>login</Button>{' '}
         <Button bsStyle="primary" onClick={this.logout}>Logout</Button>{' '}
 
         <p><br />Last update: {this.state.sinceLastUpdate} seconds ago</p>
