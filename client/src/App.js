@@ -105,7 +105,7 @@ class App extends Component {
       .catch(this.onDisconnect);
     fetch('/regulator', { headers: { "Authorization": "Bearer " + localStorage.getItem("id_token") } })
       .then(res => { return res.status === 200 ? res.json() : {} })
-      .then(regulator => this.setState({ regulator, connected: regulator.state != undefined }));
+      .then(regulator => this.setState({ regulator, connected: regulator.state !== undefined }));
   }
   getRefSensorMetric = () => {
     const refChipId = this.state.regulator.sensor;
@@ -127,7 +127,7 @@ class App extends Component {
         <Button bsStyle="primary" onClick={this.login}>Login</Button>{' '}
         <Button bsStyle="primary" onClick={this.logout}>Logout</Button>{' '}
 
-        <p><br />Last update: {this.state.sinceLastUpdate} seconds ago</p>
+        <p><br />Last update: {Math.round(this.state.sinceLastUpdate)} seconds ago</p>
       </div>
     );
   }

@@ -14,7 +14,7 @@ function labelText(metric) {
 function renderRow(metric) {    
     return (<tr align="left" key={metric.chipId}>
         <td><Label bsStyle={ageToColor(metric.age)}>
-        {metric.alias} ({metric.chipId})</Label></td>
+        {labelText(metric)}</Label></td>
         <td>{metric.t} °C</td>
         <td><Label bsStyle={voltageToColor(metric.vcc)}>{metric.vcc} V</Label></td>
     </tr>)
