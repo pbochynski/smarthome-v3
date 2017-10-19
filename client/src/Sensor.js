@@ -7,7 +7,10 @@ function ageToColor(age) {
 function voltageToColor(v) {
     return v>3.3 ? "success" : v>3.2 ? "warning" :"danger";
 } 
-
+function labelText(metric) {
+    const age = metric.age>140 ? ' '+ metric.age +' sec ago': '';
+    return metric.alias+' ('+metric.chipId+')'+age;
+}
 function renderRow(metric) {    
     return (<tr align="left" key={metric.chipId}>
         <td><Label bsStyle={ageToColor(metric.age)}>
