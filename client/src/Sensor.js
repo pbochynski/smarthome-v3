@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Panel, Label } from 'react-bootstrap';
+import millisecondsToStr from './millisecondsToStr'
 
 function ageToColor(age) {
     return age<80 ? "success" : (age<140 ? "warning": "danger")
@@ -8,7 +9,7 @@ function voltageToColor(v) {
     return v>3.3 ? "success" : v>3.2 ? "warning" :"danger";
 } 
 function labelText(metric) {
-    const age = metric.age>140 ? ' '+ metric.age +' sec ago': '';
+    const age = metric.age>140 ? ' '+ millisecondsToStr(metric.age*1000) : '';
     return metric.alias+' ('+metric.chipId+')'+age;
 }
 function renderRow(metric) {    
