@@ -74,7 +74,7 @@ class App extends Component {
     const clientId = "111955432370-0r8pj7ueegnukqsoa9othk8pgnkdvtju.apps.googleusercontent.com";
     const scopes = "email%20profile%20openid";
     const login_hint = encodeURI(localStorage.getItem("login_hint") || "");
-    const href = encodeURI(window.location.href.split('#')[0]);
+    const href = window.location.protocol+"//"+window.location.host;
     console.log("href: " + href);
     console.log("login_hint: " + login_hint);
     let redirect = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${href}&response_type=id_token&scope=${scopes}&login_hint=${login_hint}&client_id=${clientId}&gsiwebsdk=2`
