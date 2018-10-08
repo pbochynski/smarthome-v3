@@ -24,8 +24,8 @@ class Regulator extends Component {
             <h5>Desired: {desiredTemp(this.props.value)}</h5>
             <Button bsStyle="danger" onClick={this.handler({state:'off'})}>OFF</Button>{' '}
             <Button bsStyle="primary" onClick={this.handler({state:'auto',temperature:19.4})} >OUT</Button>{' '}
-            <Button bsStyle="info" onClick={this.handler({state:'auto',temperature:21.0})}>NIGHT</Button>{' '}
-            <Button bsStyle="warning" onClick={this.handler({state:'auto',temperature:21.4})}>DAY</Button>{' '}
+            <Button bsStyle="info" onClick={this.handler({state:'auto',temperature:21.4})}>NIGHT</Button>{' '}
+            <Button bsStyle="warning" onClick={this.handler({state:'auto',temperature:21.8})}>DAY</Button>{' '}
             <Button bsStyle="success" onClick={this.handler({state:'on'})}>ON</Button>
         </Panel>);
     }
